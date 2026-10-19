@@ -10,6 +10,8 @@ static const unsigned int borderpx         = 1;  /* border pixel of windows */
 static const unsigned int snap             = 0;  /* snap pixel */
 static const int showbar                   = 1;  /* 0 means no bar */
 static const int topbar                    = 1;  /* 0 means bottom bar */
+static const int horizpadbar               = 7;  /* horizontal padding for statusbar */
+static const int vertpadbar                = 5;  /* vertical padding for statusbar */
 static const char *fonts[]                 = {"JetbrainsMonoNL Nerd Font:size=10"};
 static const float rootcolor[]             = COLOR(0x000000ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */

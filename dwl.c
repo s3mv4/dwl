@@ -1701,8 +1701,8 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drwl_setscheme(m->drw, colors[SchemeNorm]);
-		tw = TEXTW(m, stext) - m->lrpad + 2; /* 2px right padding */
-		drwl_text(m->drw, m->b.width - tw, 0, tw, m->b.height, 0, stext, 0);
+		tw = TEXTW(m, stext);
+		drwl_text(m->drw, m->b.width - tw, 0, tw, m->b.height, m->lrpad / 2, stext, 0);
 	}
 
 	wl_list_for_each(c, &clients, link) {
@@ -3418,8 +3418,8 @@ updatebar(Monitor *m)
 		die("Could not load font");
 
 	m->b.scale = m->wlr_output->scale;
-	m->lrpad = m->drw->font->height;
-	m->b.height = m->drw->font->height + 2;
+	m->lrpad = m->drw->font->height + horizpadbar;
+	m->b.height = m->drw->font->height + vertpadbar;
 	m->b.real_height = (int)((float)m->b.height / m->wlr_output->scale);
 }
 
