@@ -406,6 +406,7 @@ static void urgent(struct wl_listener *listener, void *data);
 static void view(const Arg *arg);
 static void virtualkeyboard(struct wl_listener *listener, void *data);
 static void virtualpointer(struct wl_listener *listener, void *data);
+static void vsplit(Monitor *m);
 static Monitor *xytomon(double x, double y);
 static void xytonode(double x, double y, struct wlr_surface **psurface,
 		Client **pc, LayerSurface **pl, double *nx, double *ny);
@@ -3495,6 +3496,32 @@ virtualpointer(struct wl_listener *listener, void *data)
 	if (event->suggested_output)
 		wlr_cursor_map_input_to_output(cursor, device, event->suggested_output);
 	wlr_seat_set_capabilities(seat, seat->capabilities | WL_SEAT_CAPABILITY_POINTER);
+}
+
+void
+vsplit(Monitor *m)
+{
+    int i, n = 0;
+    Client *c;
+
+	wl_list_for_each(c, &clients, link)
+		if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen)
+			n++;
+	if (n == 0)
+		return;
+
+    i = 0;
+    wl_list_for_each(c, &clients, link) {
+        if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
+            continue;
+        resize(c, (struct wlr_box){
+            .x = m->w.x + i * m->w.width / n,
+            .y = m->w.y,
+            .width = (i + 1) * m->w.width / n - i * m->w.width / n,
+            .height = m->w.height
+        }, 0);
+        i++;
+    }
 }
 
 Monitor *
